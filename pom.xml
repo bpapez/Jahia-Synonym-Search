@@ -113,13 +113,31 @@
                 <exclusion>
                     <groupId>woodstox</groupId>
                     <artifactId>wstx-asl</artifactId>
-                </exclusion>                                       
+                </exclusion>         
+                <exclusion>
+                    <groupId>commons-httpclient</groupId>
+                    <artifactId>commons-httpclient</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>geronimo-stax-api_1.0_spec</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.solr</groupId>
+                    <artifactId>solr-common</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-memory</artifactId>
             <version>${lucene.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.lucene</groupId>
+                    <artifactId>lucene-core</artifactId>
+                </exclusion>
+            </exclusions>            
         </dependency>
         <dependency>
             <groupId>org.apache.jackrabbit</groupId>
@@ -152,6 +170,7 @@
                             <module-type>module</module-type>
                         </manifestEntries>
                     </archive>
+                    <archiveClasses>true</archiveClasses>
                 </configuration>
             </plugin>
         </plugins>
