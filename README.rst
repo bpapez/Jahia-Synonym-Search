@@ -44,11 +44,11 @@ will always be active on search and there is no need to explicitly set the tilde
 of index time synonym expansion is that whenever you change the synonym dictionary, you need to recreate
 the whole index. The advantage iof index time expansion is that you can also use synonyms for phrases and
 also that the relevancy calculation will be more correct than with using query time expansion (see 
-explanation in 'Solr <http://wiki.apache.org/solr/AnalyzersTokenizersTokenFilters#solr.SynonymFilterFactory>'_ ).
+explanation in `Solr <http://wiki.apache.org/solr/AnalyzersTokenizersTokenFilters#solr.SynonymFilterFactory>`_ ).
 
 For both approaches you can decide whether you want to use a custom built synonym dictionary or
 whether you want to use an available synonym dictionary, like for instance the 
-'WordNet synonym dictionary <http://wordnet.princeton.edu/>'.  The custom build dictionary is
+`WordNet synonym dictionary <http://wordnet.princeton.edu/>`_.  The custom build dictionary is
 enough if you want to just provide domain-specific synonyms like abbreviations or product names. 
 
 Usage
@@ -86,7 +86,7 @@ word1 and word4.
 
 Query time expansion with a WordNet dictionary
 ``````````````````````````````````````````````
-In order to use the existing English 'WordNet synonym dictionary <http://wordnet.princeton.edu/>', you can deploy 
+In order to use the existing English `WordNet synonym dictionary <http://wordnet.princeton.edu/>`_, you can deploy 
 this custom module to Jahia and then in the same files as mentioned above configure the Workspace->SearchIndex element 
 and set::    
 
@@ -105,4 +105,21 @@ now you need to modify the exisiting "analyzer" parameter in the element Workspa
  
   <param name="analyzer" value="org.jahia.services.search.analyzer.SynonymAnalyzer"/> 
 
-After deploying the module, there will be a 
+After deploying the module, there will be a synonyms.txt file in the WEB-INF\lib\synonymSearch-*.jar. This file 
+has some example synonyms for testing. You can create your own synonyms.txt file and place it under WEB-INF\classes.
+
+Notice that whenever you make changes in the synonyms.txt dictionary, you will manually trigger a reindexing of
+your site, by shutting the server down, deleting all indexes under::
+
+  ..\WEB-INF\var\repository\workspaces\default\index\
+  ..\WEB-INF\var\repository\workspaces\live\index\
+  
+and then again start the server, which will automatically re-create the indexes on startup.
+
+The syntax of the synonyms.txt file is explained in this `Solr Wiki article <http://wiki.apache.org/solr/AnalyzersTokenizersTokenFilters#solr.SynonymFilterFactory>`_
+
+The synonymw, ignoreCase, expand and tokenizerFactory parameters can be set in the file::
+
+  ..\modules\synonymSearch\META-INF\spring\synonymSearch.xml
+  
+With index time synonym expansion you do not need to use the tilde during query time, as synonyms will be already automatically searched.   
