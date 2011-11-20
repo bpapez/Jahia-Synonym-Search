@@ -78,11 +78,12 @@ The path interpreted relative to the index directory, which on default is::
 The syntax of the properties file is simply::
 
   word1=word2
-  word1=word3
+  word3=word1
   word2=word4
 
 In the above case word1 will have as synonyms word2 and word3, whereas word2 will have as synonyms
-word1 and word4. 
+word1 and word4. The limitation of this syntax is, that the same word can not appear twice on the left
+hand side of the equation as only the last will be taken.
 
 Query time expansion with a WordNet dictionary
 ``````````````````````````````````````````````
@@ -90,7 +91,7 @@ In order to use the existing English `WordNet synonym dictionary <http://wordnet
 this custom module to Jahia and then in the same files as mentioned above configure the Workspace->SearchIndex element 
 and set::    
 
-  <param name="synonymProviderClass" value="com.day.crx.core.query.wordnet.WordNetSynonyms"/>
+  <param name="synonymProviderClass" value="org.apache.jackrabbit.core.query.wordnet.WordNetSynonyms"/>
   
 This way whenever the user prefixes a term with the tilde (e.g. ~construction) it will also search for words with
 a similar meaning.    
@@ -120,6 +121,6 @@ The syntax of the synonyms.txt file is explained in this `Solr Wiki article <htt
 
 The synonymw, ignoreCase, expand and tokenizerFactory parameters can be set in the file::
 
-  ..\modules\synonymSearch\META-INF\spring\synonymSearch.xml
+  ..\modules\synonymSearch\resources\JahiaSynonymSearch.xml
   
 With index time synonym expansion you do not need to use the tilde during query time, as synonyms will be already automatically searched.   

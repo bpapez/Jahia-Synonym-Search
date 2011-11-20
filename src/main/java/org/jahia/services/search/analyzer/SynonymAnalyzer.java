@@ -60,14 +60,14 @@ public class SynonymAnalyzer extends StandardAnalyzer {
     @Override
     public TokenStream tokenStream(String fieldName, Reader reader) {
         TokenStream result = super.tokenStream(fieldName, reader);
-        result = ((SynonymFilterFactory) SpringContextSingleton.getBean("SynonymFilterFactory")).create(result);
+        result = SynonymFilterFactory.getInstance().create(result);
         return result;
     }
 
     @Override
     public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException {
         TokenStream result = super.reusableTokenStream(fieldName, reader);
-        result = ((SynonymFilterFactory) SpringContextSingleton.getBean("SynonymFilterFactory")).create(result);
+        result = SynonymFilterFactory.getInstance().create(result);
         return result;
     }
 

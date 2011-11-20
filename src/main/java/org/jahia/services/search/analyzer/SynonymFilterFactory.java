@@ -39,77 +39,96 @@
  */
 package org.jahia.services.search.analyzer;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
+import java.util.ResourceBundle.Control;
 
 import javax.servlet.ServletContext;
 
 import org.apache.solr.core.SolrResourceLoader;
+import org.jahia.bin.listeners.JahiaContextLoaderListener;
+import org.jahia.registries.ServicesRegistry;
+import org.jahia.services.SpringContextSingleton;
+import org.jahia.utils.i18n.JahiaResourceBundle;
+import org.jahia.utils.i18n.JahiaTemplatesRBLoader;
+import org.slf4j.Logger;
 import org.springframework.web.context.ServletContextAware;
 
 /**
- * This class is extending Solr's SynonymFilterFactory in order to make the factory
- * configurable through Jahia's Spring configuration.
+ * This class is extending Solr's SynonymFilterFactory in order to make the factory configurable through Jahia's Spring configuration.
  * 
  * @author Benjamin Papez
- *
+ * 
  */
-public class SynonymFilterFactory extends org.apache.solr.analysis.SynonymFilterFactory implements ServletContextAware {
-    private String synonyms;
-    private Boolean ignoreCase;
-    private Boolean expand;
-    private String tokenizerFactory;
-    private ServletContext servletContext;
+public class SynonymFilterFactory extends org.apache.solr.analysis.SynonymFilterFactory {
+    private transient static Logger logger = org.slf4j.LoggerFactory.getLogger(SynonymFilterFactory.class);
+    /**
+     * It's a Singleton *
+     */
+    private static SynonymFilterFactory theObject = null;
+    
+    private final static String TEMPLATE_PCKG_NAME = "Jahia Synonym Search";
 
     public SynonymFilterFactory() {
         super();
     }
 
+    /**
+     * Return the unique instance of this class.
+     * 
+     * @return the unique instance of this class
+     */
+    public static SynonymFilterFactory getInstance() {
+        if (theObject == null) {
+            theObject = new SynonymFilterFactory();
+            theObject.init();
+        }
+        return theObject;
+    }
+
     public void init() {
-        Map<String, String> args = new HashMap<String, String>();
-        args.put("synonyms", getSynonyms());
-        args.put("ignoreCase", getIgnoreCase() != null ? getIgnoreCase().toString() : null);
-        args.put("expand", getExpand() != null ? getExpand().toString() : null);
-        args.put("tokenizerFactory", getTokenizerFactory());
+        Properties args = new Properties();
+        try {
+            args.load(JahiaTemplatesRBLoader.getInstance(Thread.currentThread().getContextClassLoader(), TEMPLATE_PCKG_NAME)
+                    .getResourceAsStream(toResourceName(
+                            ServicesRegistry.getInstance().getJahiaTemplateManagerService().getTemplatePackage(TEMPLATE_PCKG_NAME)
+                                    .getResourceBundleHierarchy().get(0), "properties")));
 
-        super.init(args);
+            super.init(new HashMap(args));
 
-        inform(new SolrResourceLoader(servletContext.getRealPath("/WEB-INF")));
+            String instanceDir = JahiaContextLoaderListener.getServletContext().getRealPath("/WEB-INF");
+            inform(new SolrResourceLoader(instanceDir));
+        } catch (IOException e) {
+            logger.error("Error initializing the SynonymFilterFactory. Synonym indexing will not work!!!");
+        }
     }
-
-    public String getSynonyms() {
-        return synonyms;
-    }
-
-    public void setSynonyms(String synonyms) {
-        this.synonyms = synonyms;
-    }
-
-    public Boolean getIgnoreCase() {
-        return ignoreCase;
-    }
-
-    public void setIgnoreCase(Boolean ignoreCase) {
-        this.ignoreCase = ignoreCase;
-    }
-
-    public Boolean getExpand() {
-        return expand;
-    }
-
-    public void setExpand(Boolean expand) {
-        this.expand = expand;
-    }
-
-    public String getTokenizerFactory() {
-        return tokenizerFactory;
-    }
-
-    public void setTokenizerFactory(String tokenizerFactory) {
-        this.tokenizerFactory = tokenizerFactory;
-    }
-
-    public void setServletContext(ServletContext servletContext) {
-        this.servletContext = servletContext;
+    
+    /**
+     * Converts the given <code>bundleName</code> to the form required
+     * by the {@link ClassLoader#getResource ClassLoader.getResource}
+     * method by replacing all occurrences of <code>'.'</code> in
+     * <code>bundleName</code> with <code>'/'</code> and appending a
+     * <code>'.'</code> and the given file <code>suffix</code>. For
+     * example, if <code>bundleName</code> is
+     * <code>"foo.bar.MyResources_ja_JP"</code> and <code>suffix</code>
+     * is <code>"properties"</code>, then
+     * <code>"foo/bar/MyResources_ja_JP.properties"</code> is returned.
+     *
+     * @param bundleName
+     *        the bundle name
+     * @param suffix
+     *        the file type suffix
+     * @return the converted resource name
+     * @exception NullPointerException
+     *         if <code>bundleName</code> or <code>suffix</code>
+     *         is <code>null</code>
+     */
+    public final String toResourceName(String bundleName, String suffix) {
+        StringBuilder sb = new StringBuilder(bundleName.length() + 1 + suffix.length());
+        sb.append(bundleName.replace('.', '/')).append('.').append(suffix);
+        return sb.toString();
     }
 }
