@@ -119,8 +119,8 @@ and then again start the server, which will automatically re-create the indexes 
 
 The syntax of the synonyms.txt file is explained in this `Solr Wiki article <http://wiki.apache.org/solr/AnalyzersTokenizersTokenFilters#solr.SynonymFilterFactory>`_
 
-The synonymw, ignoreCase, expand and tokenizerFactory parameters can be set in the file::
+The synonym, ignoreCase, expand and tokenizerFactory parameters can be set in the file::
 
-  ..\modules\synonymSearch\resources\JahiaSynonymSearch.xml
+  ..\modules\synonymSearch\resources\JahiaSynonymSearch.properties
   
 With index time synonym expansion you do not need to use the tilde during query time, as synonyms will be already automatically searched.   
