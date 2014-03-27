@@ -41,21 +41,15 @@ package org.jahia.services.search.analyzer;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Properties;
-import java.util.ResourceBundle.Control;
 
-import javax.servlet.ServletContext;
 
 import org.apache.solr.core.SolrResourceLoader;
 import org.jahia.bin.listeners.JahiaContextLoaderListener;
 import org.jahia.registries.ServicesRegistry;
-import org.jahia.services.SpringContextSingleton;
 import org.jahia.utils.i18n.JahiaResourceBundle;
 import org.jahia.utils.i18n.JahiaTemplatesRBLoader;
 import org.slf4j.Logger;
-import org.springframework.web.context.ServletContextAware;
 
 /**
  * This class is extending Solr's SynonymFilterFactory in order to make the factory configurable through Jahia's Spring configuration.

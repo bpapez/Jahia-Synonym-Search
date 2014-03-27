@@ -43,7 +43,6 @@ import java.io.IOException;
 import java.io.Reader;
 
 import org.apache.lucene.analysis.TokenStream;
-import org.jahia.services.SpringContextSingleton;
 
 /**
  * This class is used to integrate the Solr SynonymAnalyzer into Jahia 6.5. It
