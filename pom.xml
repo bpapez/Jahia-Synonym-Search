@@ -44,7 +44,7 @@
   <parent> 
     <artifactId>jahia-modules</artifactId>  
     <groupId>org.jahia.modules</groupId>  
-    <version>7.0.0.0-SNAPSHOT</version> 
+    <version>7.0.0.0</version> 
   </parent>  
   <groupId>org.jahia.modules</groupId>  
   <artifactId>synonymSearch</artifactId>  
@@ -147,7 +147,7 @@
         <extensions>true</extensions>  
         <configuration> 
           <instructions> 
-            <Import-Package>com.ibm.uvm.tools;resolution:=optional,${jahia.plugin.projectPackageImport},*</Import-Package>
+            <Import-Package>com.ibm.uvm.tools;resolution:=optional,com.sun.jdmk.comm;resolution:=optional, javax.jmdns;resolution:=optional, org.apache.avalon.framework.logger;resolution:=optional, org.apache.log;resolution:=optional, sun.security.util;resolution:=optional,${jahia.plugin.projectPackageImport},*</Import-Package>
             <Jahia-Depends>default</Jahia-Depends> 
           </instructions> 
         </configuration> 
