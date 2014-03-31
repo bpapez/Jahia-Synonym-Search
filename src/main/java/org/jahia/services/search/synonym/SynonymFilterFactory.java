@@ -37,7 +37,7 @@
  * If you are unsure which license is appropriate for your use,
  * please contact the sales department at sales@jahia.com.
  */
-package org.jahia.services.search.analyzer;
+package org.jahia.services.search.synonym;
 
 import java.io.IOException;
 import java.util.HashMap;

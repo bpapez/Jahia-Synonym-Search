@@ -37,12 +37,13 @@
  * If you are unsure which license is appropriate for your use,
  * please contact the sales department at sales@jahia.com.
  */
-package org.jahia.services.search.analyzer;
+package org.jahia.services.search.synonym;
 
 import java.io.IOException;
 import java.io.Reader;
 
 import org.apache.lucene.analysis.TokenStream;
+import org.jahia.services.search.analyzer.StandardAnalyzer;
 
 /**
  * This class is used to integrate the Solr SynonymAnalyzer into Jahia 6.5. It
